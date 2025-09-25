@@ -23,6 +23,14 @@ export interface PhishingCheckResult {
 // Official verified websites list
 const official_sites = ["google.com", "yahoo.com", "sih.gov.in"];
 
+function check_website(url: string): boolean {
+  if (official_sites.includes(url)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 // Note: This is a proxy function since direct PhishTank API calls would face CORS issues
 // In a real implementation, this would call your backend service
 export async function checkUrlWithPhishTank(url: string): Promise<PhishingCheckResult> {
@@ -39,8 +47,8 @@ export async function checkUrlWithPhishTank(url: string): Promise<PhishingCheckR
     domain = url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
   }
   
-  // Check if the domain exactly matches one of the official sites
-  const isOfficial = official_sites.includes(domain);
+  // Check if the domain exactly matches one of the official sites using the corrected logic
+  const isOfficial = check_website(domain);
   const isPhishing = !isOfficial;
   
   return {
@@ -48,7 +56,7 @@ export async function checkUrlWithPhishTank(url: string): Promise<PhishingCheckR
     confidence: isOfficial ? 100 : 95,
     details: isOfficial 
       ? "URL is verified as an official and safe website"
-      : "URL is not in the official verified websites list and may be unsafe",
+      : "URL is not in the official verified websites list and identified as phishing threat",
     target: isPhishing ? getRandomTarget() : undefined,
     verified: true
   };

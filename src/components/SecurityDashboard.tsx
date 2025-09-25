@@ -326,29 +326,6 @@ export function SecurityDashboard() {
           </TabsContent>
         </Tabs>
 
-        {/* User Feedback Section */}
-        <Card className="mt-8 bg-card/50 backdrop-blur-lg border border-border/50">
-          <CardHeader>
-            <CardTitle className="gradient-text">Improve Detection Accuracy</CardTitle>
-            <CardDescription>Help us improve by reporting false positives or missed threats</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button variant="outline" className="flex-1">
-                <AlertTriangle className="h-4 w-4 mr-2" />
-                Report False Positive
-              </Button>
-              <Button variant="outline" className="flex-1">
-                <Shield className="h-4 w-4 mr-2" />
-                Report Missed Threat
-              </Button>
-              <Button variant="default" className="flex-1">
-                <CheckCircle className="h-4 w-4 mr-2" />
-                Submit Feedback
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </section>
   );

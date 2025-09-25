@@ -4,6 +4,7 @@ import { URLChecker } from "@/components/URLChecker";
 import { SecurityDashboard } from "@/components/SecurityDashboard";
 import { FeaturesSection } from "@/components/FeaturesSection";
 import { AboutSection } from "@/components/AboutSection";
+import { FeedbackSection } from "@/components/FeedbackSection";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
@@ -14,6 +15,7 @@ const Index = () => {
         <HeroSection />
         <URLChecker />
         <SecurityDashboard />
+        <FeedbackSection />
         <FeaturesSection />
         <AboutSection />
       </main>
