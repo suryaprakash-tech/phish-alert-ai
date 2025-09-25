@@ -20,40 +20,37 @@ export interface PhishingCheckResult {
   verified: boolean;
 }
 
+// Official verified websites list
+const official_sites = ["google.com", "yahoo.com", "sih.gov.in"];
+
 // Note: This is a proxy function since direct PhishTank API calls would face CORS issues
 // In a real implementation, this would call your backend service
 export async function checkUrlWithPhishTank(url: string): Promise<PhishingCheckResult> {
   // Simulate API call with realistic delay
   await new Promise(resolve => setTimeout(resolve, 2000));
   
-  // Mock response based on common phishing patterns
-  const suspiciousPatterns = [
-    'bit.ly',
-    'tinyurl.com',
-    'secure-bank-login',
-    'paypal-verify',
-    'amazon-security',
-    'microsoft-account',
-    'google-docs-share',
-    'facebook-security'
-  ];
+  // Extract domain from URL
+  let domain = url;
+  try {
+    const urlObj = new URL(url.startsWith('http') ? url : 'https://' + url);
+    domain = urlObj.hostname.replace('www.', '');
+  } catch {
+    // If URL parsing fails, use the original string
+    domain = url.replace(/^https?:\/\//, '').replace(/^www\./, '').split('/')[0];
+  }
   
-  const lowerUrl = url.toLowerCase();
-  const hasSuspiciousPattern = suspiciousPatterns.some(pattern => 
-    lowerUrl.includes(pattern)
-  );
-  
-  // Check for suspicious domain patterns
-  const isPhishing = hasSuspiciousPattern || Math.random() < 0.3; // 30% chance for demo
+  // Check if the domain exactly matches one of the official sites
+  const isOfficial = official_sites.includes(domain);
+  const isPhishing = !isOfficial;
   
   return {
     isPhishing,
-    confidence: isPhishing ? Math.floor(Math.random() * 30) + 70 : Math.floor(Math.random() * 20) + 80,
-    details: isPhishing 
-      ? "URL matches known phishing patterns or suspicious domain characteristics"
-      : "URL appears to be legitimate based on security analysis",
+    confidence: isOfficial ? 100 : 95,
+    details: isOfficial 
+      ? "URL is verified as an official and safe website"
+      : "URL is not in the official verified websites list and may be unsafe",
     target: isPhishing ? getRandomTarget() : undefined,
-    verified: Math.random() > 0.2 // 80% chance of being verified
+    verified: true
   };
 }
 
